@@ -1,11 +1,10 @@
 package ru.job4j.it;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 import java.util.NoSuchElementException;
-@Ignore
+
 public class MatrixItTest {
     @Test
     public void when4El() {
