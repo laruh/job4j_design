@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
 
 public class ForwardLinkedTest {
 
