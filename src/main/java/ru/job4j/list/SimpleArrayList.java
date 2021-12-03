@@ -11,6 +11,10 @@ public class SimpleArrayList<T> implements List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public void increaseCapacity() {
         if (size >= container.length) {
             container = Arrays.copyOf(container, size * 2);
@@ -69,7 +73,7 @@ public class SimpleArrayList<T> implements List<T> {
                 if (expectedModCount != modCount) {
                     throw  new ConcurrentModificationException();
                 }
-                return cursor < size && container[cursor] != null;
+                return cursor < size;
             }
 
             @Override

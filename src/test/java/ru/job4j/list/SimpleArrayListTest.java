@@ -120,7 +120,7 @@ public class SimpleArrayListTest {
     @Test(expected = ConcurrentModificationException.class)
     public void whenRemoveAfterGetIteratorThenMustBeException() {
         Iterator<Integer> iterator = list.iterator();
-        list.add(0);
+        list.remove(0);
         iterator.next();
     }
 }
