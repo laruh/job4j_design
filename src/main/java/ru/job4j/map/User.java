@@ -30,10 +30,10 @@ public class User {
         }
 
         Iterator<Map.Entry<User, Object>> iter = map.entrySet().iterator();
-        User value1 = iter.next().getKey();
-        User value2 = iter.next().getKey();
-        System.out.println(value1.equals(value2));
-        System.out.println("hashCode1 = " + value1.hashCode()
-                + " hashCode2 = " + value2.hashCode());
+        User key1 = iter.next().getKey();
+        User key2 = iter.next().getKey();
+        System.out.println(key1.equals(key2));
+        System.out.println("hashCode1 = " + key1.hashCode()
+                + " hashCode2 = " + key2.hashCode());
     }
 }
