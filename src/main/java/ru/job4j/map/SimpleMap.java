@@ -45,14 +45,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return new Iterator<>() {
             private final MapEntry<K, V>[] storage = table;
             private int cursor = 0;
-            private  final  int expectedModCount = modCount;
+            private final int expectedModCount = modCount;
 
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                for (int i = 0; i < storage.length; i++) {
+                for (int i = cursor; i < storage.length; i++) {
                     if (storage[i] != null) {
                         cursor = i;
                         return true;
