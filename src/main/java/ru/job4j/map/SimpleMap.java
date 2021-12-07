@@ -1,12 +1,10 @@
 package ru.job4j.map;
 
 import java.util.Iterator;
-
 import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
     private static final float LOAD_FACTOR = 0.75f;
-    private static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
     private int capacity = 8;
     private int count = 0;
     private int modCount = 0;
@@ -14,7 +12,18 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        return false;
+        if ((float) count / table.length >= LOAD_FACTOR) {
+            expand();
+        }
+        boolean rsl = false;
+        int i = indexFor(hash(key), table.length);
+        if (table[i] == null) {
+            table[i] = new MapEntry<>(key, value);
+            count++;
+            modCount++;
+            rsl = true;
+        }
+        return rsl;
     }
 
     private int hash(K key) {
@@ -22,22 +31,40 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return hk == 0 ? 0 : hk ^ (hk >>> 16);
     }
 
-    private int indexFor(int hash) {
-        return hash & (table.length - 1);
+    private int indexFor(int hash, int size) {
+        return hash & (size - 1);
     }
 
     private void expand() {
-
+        int newSize = getCapacity() * 2;
+        MapEntry<K, V>[] temp = new MapEntry[newSize];
+        for (MapEntry<K, V> node : table) {
+            if (node != null) {
+                temp[indexFor(hash(node.getKey()), newSize)] = node;
+            }
+        }
+        this.table = temp;
+        this.capacity = newSize;
     }
 
     @Override
     public V get(K key) {
-        return null;
+        int i = indexFor(hash(key), table.length);
+        return table[i] == null || !table[i].getKey().equals(key) ? null : table[i].getValue();
     }
 
     @Override
     public boolean remove(K key) {
-        return false;
+        boolean rsl = true;
+        int i = indexFor(hash(key), table.length);
+        if (table[i] == null || !table[i].getKey().equals(key)) {
+            rsl = false;
+        } else {
+            table[i] = null;
+            count--;
+            modCount++;
+        }
+        return rsl;
     }
 
     @Override
@@ -69,6 +96,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 return storage[cursor++].getKey();
             }
         };
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     static class MapEntry<K, V> {
