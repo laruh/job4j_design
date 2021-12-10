@@ -1,6 +1,5 @@
 package ru.job4j.question;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,9 +13,7 @@ public class Analize {
         int add = 0;
         int changed = 0;
         int deleted = 0;
-        Iterator<User> itPrev = previous.iterator();
-        while (itPrev.hasNext()) {
-            User user = itPrev.next();
+        for (User user : previous) {
             String nameCurrent = curMap.get(user.getId());
             if (nameCurrent != null && !curMap.get(user.getId()).equals(user.getName())) {
                 changed += 1;
