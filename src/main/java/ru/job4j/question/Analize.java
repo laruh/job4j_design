@@ -17,16 +17,13 @@ public class Analize {
         Iterator<User> itPrev = previous.iterator();
         while (itPrev.hasNext()) {
             User user = itPrev.next();
-            if (curMap.get(user.getId()) != null
-                    && !curMap.get(user.getId()).equals(user.getName())
-            ) {
+            String nameCurrent = curMap.get(user.getId());
+            if (nameCurrent != null && !curMap.get(user.getId()).equals(user.getName())) {
                 changed += 1;
                 curMap.remove(user.getId());
-            } else if (curMap.get(user.getId()) != null
-                    && curMap.get(user.getId()).equals(user.getName())
-            ) {
+            } else if (nameCurrent != null && curMap.get(user.getId()).equals(user.getName())) {
                 curMap.remove(user.getId());
-            } else if (curMap.get(user.getId()) == null) {
+            } else if (nameCurrent == null) {
                 deleted += 1;
             }
         }
