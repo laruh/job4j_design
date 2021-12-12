@@ -1,6 +1,8 @@
 package ru.job4j.io;
 
 import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
 
 public class ResultFile {
     public static String matrix(int size) {
@@ -16,9 +18,11 @@ public class ResultFile {
     }
 
     public static void main(String[] args) {
-        try (FileOutputStream out = new FileOutputStream("D:/Users/Загрузки/resultMatrix.txt")) {
-            out.write(matrix(10).getBytes());
-            out.write(System.lineSeparator().getBytes());
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream("D:/Users/Загрузки/resultMatrix.txt")
+                ))) {
+            out.println(matrix(10));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,11 +17,23 @@ public class LogFilter {
         return rsl;
     }
 
+    public static void save(List<String> log, String file) {
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(file)
+                ))) {
+            out.println(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         List<String> log = filter("log.txt");
         String[] lines = log.toString().split(",");
         for (String line : lines) {
             System.out.println(line);
         }
+        save(log, "404.txt");
     }
 }
