@@ -25,9 +25,10 @@ public class Config {
                             && !line.contains("# "))
                     .forEach(line -> {
                         String[] elem = line.split("=");
-                        if (elem.length == 2) {
-                            values.put(elem[0], elem[1]);
+                        if (elem.length != 2) {
+                            throw new IllegalArgumentException();
                         }
+                        values.put(elem[0], elem[1]);
                     });
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,10 +1,11 @@
 package ru.job4j.io;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertNull;
-
+@Ignore
 public class ConfigTest {
 
     @Test(expected = UnsupportedOperationException.class)
@@ -33,5 +34,12 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
         assertThat(config.getValues().size(), is(2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenIllegalArgumentException() {
+        String path = "./data/pair_with_exception.properties";
+        Config config = new Config(path);
+        config.load();
     }
 }
