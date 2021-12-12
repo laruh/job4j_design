@@ -21,8 +21,7 @@ public class Config {
     public void load() {
         try (BufferedReader in = new BufferedReader(new FileReader(this.path))) {
             in.lines()
-                    .filter(line -> !Objects.equals(line, null)
-                            && !line.contains("# "))
+                    .filter(line -> !line.isEmpty() && !line.contains("# "))
                     .forEach(line -> {
                         String[] elem = line.split("=");
                         if (elem.length != 2) {
@@ -30,7 +29,7 @@ public class Config {
                         }
                         values.put(elem[0], elem[1]);
                     });
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
