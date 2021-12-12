@@ -24,7 +24,7 @@ public class LogFilter {
         try (PrintWriter out = new PrintWriter(
                 new BufferedOutputStream(
                         new FileOutputStream(file)
-                ))){
+                ))) {
             for (String elem : log) {
                 out.write(elem + System.lineSeparator());
             }
