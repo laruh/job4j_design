@@ -8,13 +8,12 @@ public class EvenNumberFile {
             StringBuilder text = new StringBuilder();
             int read;
             while ((read = in.read()) != -1) {
-                if (read % 2 == 0) {
-                    text.append((char) read);
-                }
+                text.append((char) read);
             }
             String[] lines = text.toString().split(System.lineSeparator());
             for (String line : lines) {
-                System.out.println(line);
+                System.out.println(line + " "
+                        + (Integer.parseInt(line) % 2 == 0 ? "even" : "not even"));
             }
         } catch (Exception e) {
             e.printStackTrace();
