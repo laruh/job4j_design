@@ -16,9 +16,9 @@ public class Analizy {
             in.lines()
                     .map(line -> line.split(" "))
                     .forEach(line -> {
-                        if ((line[0].equals("400") || line[0].equals("500")) && temp.isEmpty()) {
+                        if (("400".equals(line[0]) || "500".equals(line[0])) && temp.isEmpty()) {
                             temp.push(line[1]);
-                        } else if (line[0].equals("200") && temp.size() == 1) {
+                        } else if ("200".equals(line[0]) && temp.size() == 1) {
                             String rsl = temp.pop() + ";" + line[1];
                             out.println(rsl);
                         }
