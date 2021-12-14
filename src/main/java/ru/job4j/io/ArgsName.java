@@ -10,7 +10,7 @@ public class ArgsName {
     public String get(String key) {
         String rsl = values.get(key);
         if (rsl == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Parameter is missing.");
         }
         return rsl;
     }
@@ -19,8 +19,9 @@ public class ArgsName {
         Arrays.stream(args)
                 .map(elem -> elem.split("="))
                 .forEach(elem -> {
-                    if (elem.length != 2) {
-                        throw new IllegalArgumentException();
+                    if (elem.length != 2 || !elem[0].startsWith("-")) {
+                        throw new IllegalArgumentException(
+                                "Wrong pattern. Provide two parameters or start key with -");
                     }
                     values.put(elem[0].replaceFirst("-", ""), elem[1]);
                 });
@@ -38,5 +39,8 @@ public class ArgsName {
 
         ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
         System.out.println(zip.get("out"));
+
+        ArgsName zip1 = ArgsName.of(new String[] {"out=project.zip", "-encoding=UTF-8"});
+        System.out.println(zip1.get("out"));
     }
 }
