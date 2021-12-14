@@ -10,5 +10,7 @@ public class DuplicatesFinder {
         Files.walkFileTree(
                 Path.of("C:\\Users\\Sharonina\\IdeaProjects\\Duplicates"),
                 duplicatesVisitor);
+        duplicatesVisitor.getDuplicates().forEach(
+                elem -> System.out.println(elem.toAbsolutePath()));
     }
 }
