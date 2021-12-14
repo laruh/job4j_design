@@ -6,13 +6,19 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
-    private final HashMap<FileProperty, Path> map = new HashMap<>();
-    private final List<Path> duplicates = new ArrayList<>();
+    private final HashMap<FileProperty, List<Path>> map = new HashMap<>();
 
-    public List<Path> getDuplicates() {
-        return duplicates;
+    public HashMap<FileProperty, List<Path>> getMap() {
+        return map;
+    }
+
+    public List<List<Path>> getDuplicates() {
+        return getMap().values().stream()
+                .filter(elem -> elem.size() > 1)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -21,10 +27,12 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
                 file.toFile().length(),
                 file.toFile().getName()
         );
-        if (!map.containsKey(fileProperty)) {
-            duplicates.add(file.toAbsolutePath());
+        if (map.containsKey(fileProperty)) {
+            map.get(fileProperty).add(file.toAbsolutePath());
         } else {
-            map.put(fileProperty, file.toAbsolutePath());
+            List<Path> el = new ArrayList<>();
+            el.add(file.toAbsolutePath());
+            map.put(fileProperty, el);
         }
         return super.visitFile(file, attrs);
     }
