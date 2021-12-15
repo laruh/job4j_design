@@ -5,20 +5,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public static void packFiles(List<File> sources, File target) {
+    public static void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(
                 new BufferedOutputStream(new FileOutputStream(target)))
         ) {
-            for (File source : sources) {
-                zip.putNextEntry(new ZipEntry(source.getPath()));
+            for (Path source : sources) {
+                zip.putNextEntry(new ZipEntry(source.toAbsolutePath().toString()));
                 try (BufferedInputStream out = new BufferedInputStream(
-                        new FileInputStream(source))) {
+                        new FileInputStream(source.toAbsolutePath().toString()))) {
                     zip.write(out.readAllBytes());
                 }
             }
@@ -59,9 +58,6 @@ public class Zip {
         File out = Paths.get(argsName.get(output)).toFile();
         validation(file, out);
         List<Path> listPaths = excludeFiles(start, argsName.get(exclude));
-        List<File> sources = listPaths.stream()
-                .map(Path::toFile)
-                .collect(Collectors.toList());
-        packFiles(sources, out);
+        packFiles(listPaths, out);
     }
 }
