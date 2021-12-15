@@ -11,19 +11,6 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public static void packSingleFile(File source, File target) throws IOException {
-        try (ZipOutputStream zip = new ZipOutputStream(
-                new BufferedOutputStream(new FileOutputStream(target)))
-        ) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void packFiles(List<File> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(
                 new BufferedOutputStream(new FileOutputStream(target)))
@@ -41,10 +28,26 @@ public class Zip {
     }
 
     public static List<Path> excludeFiles(Path root, String exclude) throws IOException {
-        Predicate<Path> condition = p -> !p.toFile().getName().endsWith(exclude);
+        Predicate<Path> condition = p -> !p.toFile().getName().endsWith("." + exclude);
         return Search.search(root, condition);
     }
 
+    public static void validation(File start, File out) {
+        if (!start.exists() && !out.exists()) {
+            throw new IllegalArgumentException(
+                    String.format("Not exist %s", start.getAbsoluteFile()
+                            + System.lineSeparator() + out.getAbsolutePath()));
+        }
+        if (!start.isDirectory() && !out.isDirectory()) {
+            throw new IllegalArgumentException(
+                    String.format("Not directory %s", start.getAbsoluteFile()
+                            + System.lineSeparator() + out.getAbsolutePath()));
+        }
+    }
+
+    /*
+    -d=C:/Users/Sharonina/IdeaProjects/ -e=*.java -o=C:/Users/Sharonina/IdeaProjects/project.zip
+     */
     public static void main(String[] args) throws IOException {
         String directory = "d";
         String exclude = "e";
@@ -57,14 +60,7 @@ public class Zip {
         Path start = Paths.get(argsName.get(directory));
         File file = start.toFile();
         File out = Paths.get(argsName.get(output)).toFile();
-        if (!file.exists() && !out.exists()) {
-            throw new IllegalArgumentException(
-                    String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory() && !out.isDirectory()) {
-            throw new IllegalArgumentException(
-                    String.format("Not directory %s", file.getAbsoluteFile()));
-        }
+        validation(file, out);
         List<Path> listPaths = excludeFiles(start, exclude);
         List<File> sources = listPaths.stream()
                 .map(Path::toFile)
