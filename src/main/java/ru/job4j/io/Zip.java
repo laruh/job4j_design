@@ -45,9 +45,6 @@ public class Zip {
         }
     }
 
-    /*
-    -d=C:/Users/Sharonina/IdeaProjects/ -e=*.java -o=C:/Users/Sharonina/IdeaProjects/project.zip
-     */
     public static void main(String[] args) throws IOException {
         String directory = "d";
         String exclude = "e";
@@ -61,7 +58,7 @@ public class Zip {
         File file = start.toFile();
         File out = Paths.get(argsName.get(output)).toFile();
         validation(file, out);
-        List<Path> listPaths = excludeFiles(start, exclude);
+        List<Path> listPaths = excludeFiles(start, argsName.get(exclude));
         List<File> sources = listPaths.stream()
                 .map(Path::toFile)
                 .collect(Collectors.toList());
