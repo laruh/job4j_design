@@ -1,49 +1,63 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ConsoleChat {
+    private static final String OUT = "закончить";
+    private static final String STOP = "стоп";
+    private static final String CONTINUE = "продолжить";
     private final String pathLog;
     private final String botAnswers;
-    private final String out = "закончить";
-    private final String stop = "стоп";
-    private final String goOn = "продолжить";
-    private final Charset charset = StandardCharsets.UTF_8;
+    private boolean pause;
 
     public ConsoleChat(String pathLog, String botAnswers) {
         this.pathLog = pathLog;
         this.botAnswers = botAnswers;
     }
 
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
+
+    private void switchPause(String question) {
+        switch (question) {
+            case STOP: setPause(true);
+            case CONTINUE : setPause(false);
+            default: setPause(false);
+        }
+    }
+
     public void run() {
        Scanner scanner = new Scanner(System.in);
-       System.out.println("Ask any question to the bot:");
        System.out.println("To control the bot, use the commands:"
-               + System.lineSeparator() + out
-               + System.lineSeparator() + stop
-               + System.lineSeparator() + goOn);
+               + System.lineSeparator() + OUT
+               + System.lineSeparator() + STOP
+               + System.lineSeparator() + CONTINUE);
+        System.out.println("Ask any question to the bot:");
        String question;
-       boolean pause = false;
        do {
            question = scanner.nextLine();
            saveLog(question);
-           if (!stop.equals(question) || goOn.equals(question)) {
+           switchPause(question);
+           if (!pause) {
                String botAnswer = getAnswer();
                System.out.println(botAnswer);
                saveLog(botAnswer);
-           } else if (stop.equals(question)) {
-               question = scanner.nextLine();
-               saveLog(question);
+               System.out.println(pause + " " + "состояние pause");
            }
-       } while (!out.equals(question));
+       } while (!OUT.equals(question));
     }
 
     private List<String> readPhrases() {
         List<String> rsl = new ArrayList<>();
-        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers, charset))) {
+        try (BufferedReader in = new BufferedReader(
+                new FileReader(botAnswers, StandardCharsets.UTF_8))) {
             in.lines().forEach(rsl::add);
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,11 +72,10 @@ public class ConsoleChat {
     }
 
     private void saveLog(String string) {
-        List<String> log = List.of(string.split(" "));
         try (PrintWriter pw = new PrintWriter(
-                new FileWriter(pathLog, charset, true))
+                new FileWriter(pathLog, StandardCharsets.UTF_8, true))
         ) {
-            log.forEach(pw::println);
+            pw.write(string + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
