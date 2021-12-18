@@ -29,6 +29,7 @@ public class ConsoleChat {
         switch (question) {
             case STOP -> setPause(true);
             case CONTINUE -> setPause(false);
+            default -> isPause();
         }
     }
 
