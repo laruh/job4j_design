@@ -41,20 +41,16 @@ public class ConsoleChat {
                + System.lineSeparator() + CONTINUE);
         System.out.println("Ask any question to the bot:");
        String question = scanner.nextLine();
+       saveLog(question);
        while (!OUT.equals(question)) {
            switchPause(question);
            if (!isPause()) {
                String botAnswer = getAnswer();
                System.out.println(botAnswer);
-               saveLog(question);
                saveLog(botAnswer);
-           } else {
-               saveLog(question);
            }
            question = scanner.nextLine();
-           if (OUT.equals(question)) {
-               saveLog(question);
-           }
+           saveLog(question);
        }
     }
 
