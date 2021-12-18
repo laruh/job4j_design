@@ -27,9 +27,8 @@ public class ConsoleChat {
 
     private void switchPause(String question) {
         switch (question) {
-            case STOP: setPause(true);
-            case CONTINUE : setPause(false);
-            default: setPause(false);
+            case STOP -> setPause(true);
+            case CONTINUE -> setPause(false);
         }
     }
 
@@ -40,18 +39,22 @@ public class ConsoleChat {
                + System.lineSeparator() + STOP
                + System.lineSeparator() + CONTINUE);
         System.out.println("Ask any question to the bot:");
-       String question;
-       do {
-           question = scanner.nextLine();
-           saveLog(question);
+       String question = scanner.nextLine();
+       while (!OUT.equals(question)) {
            switchPause(question);
-           if (!pause) {
+           if (!isPause()) {
                String botAnswer = getAnswer();
                System.out.println(botAnswer);
+               saveLog(question);
                saveLog(botAnswer);
-               System.out.println(pause + " " + "состояние pause");
+           } else {
+               saveLog(question);
            }
-       } while (!OUT.equals(question));
+           question = scanner.nextLine();
+           if (OUT.equals(question)) {
+               saveLog(question);
+           }
+       }
     }
 
     private List<String> readPhrases() {
@@ -75,7 +78,7 @@ public class ConsoleChat {
         try (PrintWriter pw = new PrintWriter(
                 new FileWriter(pathLog, StandardCharsets.UTF_8, true))
         ) {
-            pw.write(string + System.lineSeparator());
+            pw.println(string);
         } catch (IOException e) {
             e.printStackTrace();
         }
