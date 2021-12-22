@@ -1,13 +1,16 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 /**
  * Задача класса прочитать данные из CSV файла и вывести их.
  * @author Alina Sharonina
- * @version 1.0
+ * @version 2.0
  */
 public class CSVReader {
     /**
@@ -41,15 +44,16 @@ public class CSVReader {
      * разделитель delimiter, приемник данных out и фильтр по столбцам filter.
      * @param argsName содержит массив параметров: path, delimiter, out, filter.
      */
-    public static void handle(ArgsName argsName) {
+    public static void handle(ArgsName argsName) throws IOException {
         String inPath = argsName.get("path");
         String delimiter = argsName.get("delimiter");
         String outPath = argsName.get("out");
         String filter = argsName.get("filter");
-        validation(inPath, outPath);
+        validation(inPath);
         File fileIn = Paths.get(inPath).toFile();
+        File tempFile = File.createTempFile("data", null);
         try (
-                PrintWriter out = new PrintWriter(new FileOutputStream(outPath));
+                PrintWriter out = new PrintWriter(new FileOutputStream(tempFile));
                 Scanner scanner = new Scanner(fileIn)
         ) {
             List<Integer> indexes = makeHead(scanner, delimiter, filter, out);
@@ -65,20 +69,27 @@ public class CSVReader {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if ("stdout".equals(outPath)) {
+            try (BufferedReader in = new BufferedReader(new FileReader(tempFile))) {
+                in.lines().forEach(System.out::println);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Path out = Paths.get(outPath);
+            Files.copy(tempFile.toPath(), out, StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 
     /**
-     * Метод предназначен для валидации файлов.
+     * Метод предназначен для валидации файла чтения.
      * @param inPath путь до считываемого файла.
-     * @param outPath путь до файла, в который мы будем записывать данные.
      */
-    public static void validation(String inPath, String outPath) {
+    public static void validation(String inPath) {
         File fileIn = Paths.get(inPath).toFile();
-        File fileOut = Paths.get(outPath).toFile();
-        if (!fileIn.exists() || !fileOut.exists()) {
+        if (!fileIn.exists()) {
             throw new IllegalArgumentException(
-                    String.format("Not exist %s", fileIn.getAbsoluteFile()
-                            + System.lineSeparator() + fileOut.getAbsoluteFile()));
+                    String.format("Not exist %s", fileIn.getAbsoluteFile()));
         }
     }
 
