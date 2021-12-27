@@ -10,18 +10,18 @@ public class UsageLog4j {
     public static void main(String[] args) {
         String name = "Petr Arsentev";
         int age = 33;
-        String fileTrace = "This is trace file";
-        String pathTrace = "./project/trace.txt";
-        String info = "Print log";
-        int number = 2;
-        String warning = "Dont delete file";
-        String fileWarning = "txt.txt";
+        char trace = 'f';
+        byte number = 2;
+        boolean bool = false;
+        float flo = 4;
+        short shor = 3;
+        long lon = 404;
+        double doubleNumber = 3200;
         String error = "Connection refused to host";
-        String errorName = "https://job4j.ru/";
-        LOG.trace("Trace info: {}, {}", fileTrace, pathTrace);
+        LOG.trace("Trace info: {}, {}", trace, bool);
         LOG.debug("User info name : {}, age : {}", name, age);
-        LOG.info("You need to: {} {} times", info, number);
-        LOG.warn("Warning! {}: {}", warning, fileWarning);
-        LOG.error("Error! {}: {}", error, errorName);
+        LOG.info("Use these numbers: {} and {}", flo, number);
+        LOG.warn("Warning! {}: {}", shor, doubleNumber);
+        LOG.error("Error! {}: {}", error, lon);
     }
 }
