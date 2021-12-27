@@ -23,5 +23,10 @@ public class UsageLog4j {
         LOG.info("Use these numbers: {} and {}", flo, number);
         LOG.warn("Warning! {}: {}", shor, doubleNumber);
         LOG.error("Error! {}: {}", error, lon);
+        try {
+            throw new Exception("Not supported code");
+        } catch (Exception e) {
+            LOG.error("Exception in log example", e);
+        }
     }
 }
