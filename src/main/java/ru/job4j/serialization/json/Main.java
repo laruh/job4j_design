@@ -2,6 +2,10 @@ package ru.job4j.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -44,5 +48,30 @@ public class Main {
         final Pet petMod = gson.fromJson(petJson, Pet.class);
         System.out.println(personMod);
         System.out.println(petMod);
+
+        /* JSONObject из json-строки строки */
+        JSONObject jsonOwner = new JSONObject(
+                "{\"contact\":\"8-800-555-35-35\",\"name\":\"Petya\"}"
+        );
+
+        /* JSONArray из ArrayList */
+        List<String> list = new ArrayList<>();
+        list.add("male");
+        list.add("bulldog");
+        JSONArray jsonInfo = new JSONArray(list);
+
+        /* JSONObject напрямую методом put */
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", pet.getName());
+        jsonObject.put("age", pet.getAge());
+        jsonObject.put("owner", jsonOwner);
+        jsonObject.put("vaccinated", pet.isVaccinated());
+        jsonObject.put("info", jsonInfo);
+
+        /* Выведем результат в консоль */
+        System.out.println(jsonObject);
+
+        /* Преобразуем объект person в json-строку */
+        System.out.println(new JSONObject(pet));
     }
 }
