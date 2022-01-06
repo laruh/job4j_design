@@ -1,0 +1,10 @@
+create table students(
+	id serial primary key,
+	name varchar(100),
+	age int,
+	examined boolean
+);
+insert into students(name, age, examined) values('Pasha', 15, true);
+update students set examined=false;
+select * from students;
+delete from students;
