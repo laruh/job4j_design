@@ -1,0 +1,18 @@
+create table weapon(
+	id serial primary key,
+	seria int,
+	number int
+);
+
+create table policeman(
+	id serial primary key,
+	name char(100),
+	weapon_id int references weapon(id) unique
+);
+
+insert into weapon(seria, number) values(555,3535);
+insert into policeman(name, weapon_id) values('Tom', 1);
+
+select w.seria
+from policeman p, weapon w
+where p.weapon_id=w.id

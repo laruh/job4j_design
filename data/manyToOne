@@ -1,0 +1,16 @@
+create table city(
+	id serial primary key,
+	name char(100)
+);
+
+create table citizen(
+	id serial primary key,
+	name char(100),
+	id_city int references city(id)
+);
+
+insert into city(name) values('Tomsk');
+insert into citizen(name, id_city) values('Petya', 1);
+insert into citizen(name, id_city) values('Vasya', 1);
+
+select * from citizen;

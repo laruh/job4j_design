@@ -1,0 +1,27 @@
+create table doctor(
+	id serial primary key,
+	name char(100)
+);
+
+create table patient(
+	id serial primary key,
+	name char(100)	
+);
+
+create table treatment_course(
+	id serial primary key,
+	doctor_id int references doctor(id),
+	patient_id int references patient(id)
+);
+
+insert into doctor(name) values('Peter');
+insert into doctor(name) values('Tom');
+insert into patient(name) values('Sam');
+insert into patient(name) values('Nikol');
+
+insert into treatment_course(doctor_id, patient_id) values(1,1);
+insert into treatment_course(doctor_id, patient_id) values(1,2);
+insert into treatment_course(doctor_id, patient_id) values(2,1);
+insert into treatment_course(doctor_id, patient_id) values(2,2);
+
+select * from treatment_course;
