@@ -1,9 +1,1 @@
-create database users;
-create database role;
-create database rules;
-create database item;
-create database comments;
-create database attachs;
-create database category;
-create database state;
-create database role_rules;
+create database users_roles_rights;
