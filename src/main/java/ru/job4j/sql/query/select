@@ -1,0 +1,38 @@
+select *
+from product p, type t
+where p.type_id=t.id
+and LOWER(t.name) like'сыр';
+
+select *
+from product p, type t
+where p.type_id=t.id
+and LOWER(p.name) like'%мороженое%';
+
+select *
+from product p, type t
+where p.type_id=t.id
+and p.expired_date < current_date;
+
+select MAX(p.price)
+from product p, type t
+where p.type_id=t.id;
+
+select t.name as Название_типа, COUNT(p.id)
+from product p, type t
+where p.type_id=t.id
+group by t.name;
+
+select *
+from product p, type t
+where p.type_id=t.id
+and t.name in ('МОЛОКО', 'СЫР');
+
+select t.name, COUNT(p.type_id)
+from product p, type t
+where p.type_id=t.id
+group by t.name
+having COUNT(p.type_id)<10;
+
+select p.name Имя_продукта, t.name Тип_продукта
+from product p, type t
+where p.type_id=t.id;
