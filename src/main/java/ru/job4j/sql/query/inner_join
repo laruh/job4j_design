@@ -1,0 +1,40 @@
+create table country(
+	id serial primary key,
+	name char(100),
+	population int
+);
+
+create table hotel(
+	id serial primary key,
+	name char(100),
+	room_num int,
+	stars int,
+	country_id int references country(id)
+);
+insert into country(name, population) values('USA', 329000);
+insert into country(name, population) values('Germany', 83000);
+insert into country(name, population) values('Russia', 144000);
+
+insert into hotel(name, room_num, stars, country_id)
+values('The Grand Budapest Hotel', 666, 5, 1);
+
+insert into hotel(name, room_num, stars, country_id)
+values('Hotel Zollhof', 17, 2, 2);
+
+insert into hotel(name, room_num, stars, country_id)
+values('Chistye Prudy', 23, 3, 3);
+
+insert into hotel(name, room_num, stars)
+values('Hotel Kasjtak', 4, 1);
+
+select *
+from hotel h
+inner join country c on h.country_id=c.id;
+
+select h.name Name_of_Hotel, h.stars
+from hotel h
+inner join country c on h.country_id=c.id;
+
+select h.name Name_of_Hotel, c.name Name_of_country
+from hotel h
+inner join country c on h.country_id=c.id;
