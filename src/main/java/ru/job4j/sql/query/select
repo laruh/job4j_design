@@ -13,9 +13,10 @@ from product p, type t
 where p.type_id=t.id
 and p.expired_date < current_date;
 
-select MAX(p.price)
+select t.name, MAX(p.price) as Максимальная_цена_в_категории
 from product p, type t
-where p.type_id=t.id;
+where p.type_id=t.id
+group by t.id;
 
 select t.name as Название_типа, COUNT(p.id)
 from product p, type t
