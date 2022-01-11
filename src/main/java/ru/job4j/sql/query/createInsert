@@ -37,6 +37,8 @@ values('Сыр голубой с плесенью', 1, '2022-03-01', 250.49);
 insert into product(name, type_id, expired_date, price)
 values('Сыр Гауда', 1, '2022-01-08', 158.49);
 insert into product(name, type_id, expired_date, price)
+values('Сыр импорт', 1, '2022-02-08', 769.99);
+insert into product(name, type_id, expired_date, price)
 values('Мороженое мясо',2, '2022-01-07', 599.99);
 insert into product(name, type_id, expired_date, price)
 values('Филе куриное', 2, '2022-01-13', 342.89);
