@@ -45,7 +45,11 @@ values('Tesla', 2, 3);
 insert into car(name, body_id, engine_id)
 values('Hyundai', 2, 1);
 
-select * from car;
+select c.name car, b.name body, e.name engine, t.name transmission
+from car c
+left join body b on c.body_id=b.id
+left join engine e on c.engine_id=e.id
+left join transmission t on c.body_id=t.id;
 --нет ни в одном авто
 select b.name
 from body b
