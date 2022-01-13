@@ -12,7 +12,7 @@ public class ConnectionDemo {
         String path = "./src/main/java/ru/job4j/jdbc/app.properties";
         Config config = new Config(path);
         config.load();
-        Class.forName("org.postgresql.Driver");
+        Class.forName(config.value("driver"));
         try (Connection connection = DriverManager.getConnection(
                 config.value("url"),
                 config.value("login"),
