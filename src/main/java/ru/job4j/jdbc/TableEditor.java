@@ -29,14 +29,16 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void execute(String sql, String tableName) throws Exception {
-        Statement statement = connection.createStatement();
-        statement.execute(sql);
-        System.out.println(getTableScheme(connection, tableName));
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+            System.out.println(getTableScheme(connection, tableName));
+        }
     }
 
     private void execute(String sql) throws Exception {
-        Statement statement = connection.createStatement();
-        statement.execute(sql);
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
     }
 
     public void createTable(String tableName) throws Exception {
@@ -49,26 +51,30 @@ public class TableEditor implements AutoCloseable {
     }
 
     public void dropTable(String tableName) throws Exception {
-        String sql = "drop table if exists " + tableName;
+        String sql = String.format("drop table if exists " + tableName);
         execute(sql);
     }
 
     public void addColumn(String tableName, String columnName, String type) throws Exception {
-        String sql = "alter table " + tableName + " add column " + columnName + " " + type;
+        String sql = String.format(
+                "alter table " + tableName + " add column " + columnName + " " + type
+        );
         execute(sql, tableName);
     }
 
     public void dropColumn(String tableName, String columnName) throws Exception {
-        String sql = "alter table " + tableName + " drop column " + columnName;
+        String sql = String.format("alter table " + tableName + " drop column " + columnName);
         execute(sql, tableName);
     }
 
     public void renameColumn(String tableName,
                              String columnName,
                              String newColumnName) throws Exception {
-        String sql = "alter table " + tableName
+        String sql = String.format(
+                "alter table " + tableName
                 + " rename column " + columnName
-                + " to " + newColumnName;
+                + " to " + newColumnName
+        );
         execute(sql, tableName);
     }
 
