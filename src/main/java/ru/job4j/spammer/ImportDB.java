@@ -24,7 +24,7 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
                         String[] args = line.split(";");
-                        if (args.length < 2) {
+                        if (args.length != 2 || line.isEmpty()) {
                             throw new IllegalArgumentException(
                                     "Wrong pattern. Provide two parameters");
                         }
