@@ -24,9 +24,13 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
                         String[] args = line.split(";");
+                        if (args.length < 2) {
+                            throw new IllegalArgumentException(
+                                    "Wrong pattern. Provide two parameters");
+                        }
                         User user = new User(args[0], args[1]);
                         users.add(user);
-                    });
+            });
         }
         return users;
     }
